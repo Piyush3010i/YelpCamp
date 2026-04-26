@@ -1,0 +1,16 @@
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+const CampgroundSchema= new Schema({// creating Campground schema
+    title: String,
+    image: String,
+    price: Number,
+    description: String,
+    location: String,
+    reviews: [{
+        type: Schema.Types.ObjectID,
+        ref: 'Review'
+    }]
+});
+
+module.exports= mongoose.model("Campground",CampgroundSchema);

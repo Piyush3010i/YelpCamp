@@ -1,0 +1,63 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campground: <%= campground.title %></title>
+</head>
+<body> -->
+<!-- page to show a particular Campground -->
+<% layout("layouts/boilerplate.ejs") %>
+
+<div class="col">
+  <div class="row-6 offset-3">
+    <div class="card mb-4" style="width: 30rem">
+      <img src="<%= campground.image %>" class="card-img-top" alt="..." />
+      <div class="card-body">
+        <h5 class="card-title"><%= campground.title %></h5>
+        <p class="card-text"><%= campground.description %></p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item text-secondary">
+          <%= campground.location %>
+        </li>
+        <li class="list-group-item">$ <%= campground.price %>/night</li>
+      </ul>
+      <div class="card-body">
+        <a
+          href="/campgrounds/<%= campground._id %>/edit"
+          class="card-link btn btn-info bg-gradient"
+          >Edit</a
+        >
+        <form
+          class="d-inline"
+          action="/campgrounds/<%= campground._id %>?_method=DELETE"
+          method="POST"
+        >
+          <button class="btn btn-danger bg-gradient">Delete</button>
+        </form>
+      </div>
+      <div class="card-footer">
+        <a href="/campgrounds">All Campgrounds</a>
+      </div>
+    </div>
+    <h4>Leave a Review</h4>
+    <form action="/campgrounds/<%= campground._id %>/reviews" method="POST"  class=" validated-form mb-3" novalidate   >
+    <div class="mb-3" style="width: 30rem">
+      <label class="form-label"for="rating">Rating</label>
+      <input class="form-range" type="range" min="1" max="5" name="review[rating]" id="rating">
+    </div>
+    <div class="mb-3" style="width: 30rem">
+      <label class="form-label" for="body">Review</label>
+      <textarea class="form-control" name="review[body]" id="body" cols="3" rows="3" required></textarea>
+      <div class="valid-feedback">
+                Looks good!
+      </div>
+    </div>
+    <button class="btn btn-success">Submit</button>
+  </form> 
+  </div>
+</div>
+
+<!-- </body>
+</html> -->
