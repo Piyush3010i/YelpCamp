@@ -10,6 +10,7 @@ const morgan= require('morgan');
 const customError= require('./utilities/expressError.js');
 const wrapAsync= require('./utilities/wrapAsync.js');
 const Review= require('./models/review');
+const campground = require('./models/campground');
 
 // mongoose connect and error handling
 mongoose.connect('mongodb://127.0.0.1:27017/Yelp-Camp')
@@ -116,6 +117,16 @@ app.post('/campgrounds/:id/reviews', validateReview,wrapAsync( async(req,res)=>{
     await review.save();
     await campground.save();
     res.redirect(`/campgrounds/${campground._id}`);
+}))
+
+// delete route for deleting specific reviews
+app.delete('/campgrounds/:id/reviews/:reviewsId', wrapAsync( async(req,res)=>{
+    const {id, reviewsId}=req.params;
+    console.log("id:",id);
+    console.log("reviews._id:", reviewsId);
+    await Campground.findByIdAndUpdate( id, {$pull: {reviews:reviewsId}});
+    await Review.findByIdAndDelete(reviewsId);
+    res.redirect(`/campgrounds/${id}`);
 }))
 
 app.all("*", (req, res, next) => {
