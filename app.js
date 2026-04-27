@@ -4,12 +4,11 @@ const path= require('path');
 const mongoose= require('mongoose');
 const Campground= require('./models/campground');
 const methodOverride= require("method-override");
-const ejsMate= require('ejs-mate');  
-const Joi= reuire('joi');
+const ejsMate= require('ejs-mate');
+const {campgroundSchema,reviewSchema}= require('./Schemas.js');
 const morgan= require('morgan');
 const customError= require('./utilities/expressError.js');
 const wrapAsync= require('./utilities/wrapAsync.js');
-const validateCampground= require('./utilities/validateCampground.js');
 const Review= require('./models/review');
 
 // mongoose connect and error handling
@@ -29,6 +28,31 @@ app.engine('ejs',ejsMate);
 app.use(express.urlencoded({ extended: true}));// middleware to parse the url as our data for req.body
 app.use(methodOverride('_method'));// middleware for method override for put,patch, delete method
 app.use(morgan("dev"));
+
+//campground postman validation
+const validateCampground = (req, res, next) => {
+  const { error } = campgroundSchema.validate(req.body);
+  if (error) {
+    const msg = error.details.map((el) => el.message).join(","); // either we can do it like this
+    // const msg = result.error.details[0].message; // or like this
+    throw new customError(msg, 400);
+  } else {
+    next();
+  }
+  //  console.log(result.error.details[0].message);
+};
+
+//review postman validation
+const validateReview= (req, res, next)=>{
+    const{error}= reviewSchema.validate(req.body);
+    if(error){
+        const  msg= error.details.map((el)=> el.message).join(",");
+        throw new customError(msg, 400);
+    }
+    else{
+        next();
+    }
+}
 
 
 // home yelpcamp route
@@ -60,7 +84,7 @@ app.post("/campgrounds", validateCampground, wrapAsync( async(req,res)=>{
 
 // route to show a particular campground
 app.get("/campgrounds/:id", wrapAsync( async(req, res)=>{
-    const campground= await Campground.findById(req.params.id);// finding campgrounds through their id
+    const campground= await Campground.findById(req.params.id).populate('reviews');// finding campgrounds through their id
     res.render('campgrounds/show.ejs',{campground});
 }))
 
@@ -85,7 +109,7 @@ app.delete('/campgrounds/:id', wrapAsync( async(req,res)=>{
 }))
 
 // post route for posting reviews
-app.post('/campgrounds/:id/reviews', wrapAsync( async(req,res)=>{
+app.post('/campgrounds/:id/reviews', validateReview,wrapAsync( async(req,res)=>{
     const campground= await Campground.findById(req.params.id);
     const review= new Review(req.body.review);
     campground.reviews.push(review);
