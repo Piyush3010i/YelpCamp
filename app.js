@@ -10,10 +10,14 @@ const customError = require("./utilities/expressError.js");
 const wrapAsync = require("./utilities/wrapAsync.js");
 const Campground = require("./models/campground");
 const Review = require("./models/review");
-const campgrounds = require("./routes/campgrounds.js");
-const reviews= require("./routes/reviews.js");
-const session= require("express-session");
-const flash= require("connect-flash");
+const User = require("./models/user.js");
+const campgroundRoutes = require("./routes/campgrounds.js");
+const reviewRoutes = require("./routes/reviews.js");
+const userRoutes = require("./routes/user.js");
+const session = require("express-session");
+const flash = require("connect-flash");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
 
 // mongoose connect and error handling
 mongoose.connect("mongodb://127.0.0.1:27017/Yelp-Camp");
@@ -46,8 +50,17 @@ const sessionConfig = {
   },
 };
 
+// below method is used to create session and flash in every app routes
 app.use(session(sessionConfig));
 app.use(flash());
+
+// below methods are used to authenticate, manage session and flash using passport 
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser()); // serialization is a static method that is already present inside the passport, and it is used to store user data into a session
+passport.deserializeUser(User.deserializeUser()); // deserialization tells us how a user session is destroyed after session ends.
 
 // middleware to flash msg on routes like create new camp, delete camp, update camp etc
 app.use((req, res, next)=>{
@@ -58,8 +71,9 @@ app.use((req, res, next)=>{
 
 
 // routes setup
-app.use('/campgrounds', campgrounds); // campgrounds router
-app.use('/campgrounds/:id/reviews', reviews); // reviews router
+app.use('/campgrounds', campgroundRoutes); // campgrounds router
+app.use('/campgrounds/:id/reviews', reviewRoutes); // reviews router
+app.use('/', userRoutes); // user routes for authentication
 
 // home yelpcamp route
 app.get("/", (req, res) => {
