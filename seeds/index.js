@@ -22,6 +22,7 @@ const seedDB= async()=>{
         const price= Math.floor( Math.random()* 1000);// generating random no 
         const camp = new Campground({
           // creating instance of Campground model
+          author:'6a2546f1957386b704208645',
           location: `${cities[random1000].city}, ${cities[random1000].state}`,
           title: `${sample(descriptors)} ${sample(places)}`,
           image: "https://picsum.photos/400?random=${Math.random()}",

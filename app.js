@@ -64,6 +64,7 @@ passport.deserializeUser(User.deserializeUser()); // deserialization tells us ho
 
 // middleware to flash msg on routes like create new camp, delete camp, update camp etc
 app.use((req, res, next)=>{
+  res.locals.currentUser= req.user; // this will provide the data of the current user, which is logged in, in global or every routes.
   res.locals.success= req.flash('success');
   res.locals.error= req.flash('error');
   next();

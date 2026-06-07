@@ -3,21 +3,13 @@ const { reviewSchema } = require("../Schemas.js");
 const wrapAsync = require("../utilities/wrapAsync.js");
 const Campground = require("../models/campground");
 const Review = require("../models/review");
+const {validateReview} = require("../middleware.js");
 
 
 const router= express.Router({mergeParams: true});
 
 
-//review postman validation
-const validateReview = (req, res, next) => {
-  const { error } = reviewSchema.validate(req.body);
-  if (error) {
-    const msg = error.details.map((el) => el.message).join(",");
-    throw new customError(msg, 400);
-  } else {
-    next();
-  }
-};
+
 
 // post route for posting reviews
 router.post("/", validateReview, wrapAsync(async (req, res) => {
