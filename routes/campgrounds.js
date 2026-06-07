@@ -41,7 +41,13 @@ router.get("/:id", wrapAsync(async (req, res) => {
     //   req.flash("error", "Invalid Campground ID!");
     //   return res.redirect("/campgrounds");
     // }
-    const campground = await Campground.findById(id).populate("reviews").populate("author"); // finding campgrounds through their id
+    const campground = await Campground.findById(id).
+    populate({
+      path:"reviews",
+      populate:{
+        path:"author" // populate author of separate reviews
+      }
+    }).populate("author"); //populate author of campground // finding campgrounds through their id
     if(!campground){
       req.flash('error','Cannot find that Campground!');
       return res.redirect('/campgrounds');

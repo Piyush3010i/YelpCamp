@@ -3,7 +3,7 @@ const { reviewSchema } = require("../Schemas.js");
 const wrapAsync = require("../utilities/wrapAsync.js");
 const Campground = require("../models/campground");
 const Review = require("../models/review");
-const {validateReview} = require("../middleware.js");
+const {validateReview, isLoggedIn, isReviewAuthor} = require("../middleware.js");
 
 
 const router= express.Router({mergeParams: true});
@@ -12,9 +12,10 @@ const router= express.Router({mergeParams: true});
 
 
 // post route for posting reviews
-router.post("/", validateReview, wrapAsync(async (req, res) => {
+router.post("/", isLoggedIn,validateReview, wrapAsync(async (req, res) => {
     const campground = await Campground.findById(req.params.id);
     const review = new Review(req.body.review);
+    review.author = req.user._id;
     campground.reviews.push(review);
     await review.save();
     req.flash('success',"You've made a new Review!");
@@ -24,7 +25,7 @@ router.post("/", validateReview, wrapAsync(async (req, res) => {
 );
 
 // delete route for deleting specific reviews
-router.delete("/:reviewsId", wrapAsync(async (req, res) => {
+router.delete("/:reviewsId", isLoggedIn,isReviewAuthor, wrapAsync(async (req, res) => {
     const { id, reviewsId } = req.params;
     console.log("id:", id);
     console.log("reviews._id:", reviewsId);
