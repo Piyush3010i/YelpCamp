@@ -31,7 +31,17 @@
                 Please type the location.
             </div>
         </div>
-        <input type="file" name="image" id="image" multiple>
+        <div class="mb-3">
+        <label for="image" class="form-label">Choose Images</label>
+        <input class="form-control" type="file" id="image" name="image" multiple>
+        <div class="valid-feedback">
+                Looks good!
+            </div>
+            <div class="invalid-feedback">
+                Campground will look good with images!
+            </div>
+        </div>
+        <!-- <input type="file" name="image" id="image" multiple> -->
         <!-- <div class="mb-3">
             <label class="form-label" for="image">Image Url</label>
             <input class="form-control" type="text" id="image" name="campground[image]" required>

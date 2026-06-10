@@ -13,7 +13,7 @@ const upload = multer({ storage });
 
 router.route("/")
     .get(wrapAsync(campgroundController.index)) // route to find all campgrounds
-    .post(isLoggedIn,upload.array('image'),validateCampground, wrapAsync(campgroundController.showNewCampground)) // post route to submit the data from new Campground form
+    .post(isLoggedIn, upload.array('image'), validateCampground, wrapAsync(campgroundController.showNewCampground)) // post route to submit the data from new Campground form
     // .post(upload.single('image'),(req,res)=>{
     //     console.log(req.body, req.file);
     //     res.send("it worked");
@@ -26,12 +26,12 @@ router.get("/new", isLoggedIn, campgroundController.renderNewCampground);
 
 router.route("/:id")
     .get(wrapAsync(campgroundController.showCampground)) // route to show a particular campground
-    .put(isLoggedIn,isAuthor,validateCampground, wrapAsync(campgroundController.putEditCampground)) // put route for updating the campground
-    .delete(isLoggedIn,isAuthor,wrapAsync(campgroundController.deleteCampground)) // delete route for deleting the campground
+    .put(isLoggedIn, isAuthor,upload.array('image'), validateCampground, wrapAsync(campgroundController.putEditCampground)) // put route for updating the campground
+    .delete(isLoggedIn, isAuthor, wrapAsync(campgroundController.deleteCampground)) // delete route for deleting the campground
 
 
 // get route for rendering the edit campground form
-router.get("/:id/edit", isLoggedIn,isAuthor,wrapAsync(campgroundController.renderEditCampground));
+router.get("/:id/edit", isLoggedIn, isAuthor, wrapAsync(campgroundController.renderEditCampground));
 
 
 module.exports = router;
