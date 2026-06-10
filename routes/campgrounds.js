@@ -5,13 +5,19 @@ const {isLoggedIn, isAuthor, validateCampground} = require("../middleware.js");
 const {storeReturnTo} = require("../middleware.js");
 const campgroundController = require("../controllers/campgrounds.js");
 const router = express.Router();
+const multer = require("multer");
+const {storage} = require("../cloudinary/index.js");
+const upload = multer({ storage });
 
 
 
 router.route("/")
     .get(wrapAsync(campgroundController.index)) // route to find all campgrounds
-    .post(isLoggedIn,validateCampground, wrapAsync(campgroundController.showNewCampground)) // post route to submit the data from new Campground form
-
+    .post(isLoggedIn,upload.array('image'),validateCampground, wrapAsync(campgroundController.showNewCampground)) // post route to submit the data from new Campground form
+    // .post(upload.single('image'),(req,res)=>{
+    //     console.log(req.body, req.file);
+    //     res.send("it worked");
+    // })
 
 // get route for render new campground form
 // note this must be above the show route to avoid app crash

@@ -17,10 +17,15 @@ module.exports.showNewCampground = async (req, res) => {
     // if(!req.body.campground){
     //     throw new customError("Invalid Campground Data!", 400);
     // }
-
+    
     const campground = new Campground(req.body.campground);
+    campground.images=req.files.map(f=>({ // if we upload 2 or more photos, this function will map those images stored in array
+      url: f.path,                       // and map them using theses simple object : url, filename and save those object in campground immages
+      filename: f.filename
+      }));
     campground.author = req.user._id;
     await campground.save();
+    console.log(campground.images);
     req.flash('success','Successfully created new Campground!');
     res.redirect(`/campgrounds/${campground._id}`); // this will redirect to the show page with the new campground data
   };
