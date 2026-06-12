@@ -3,6 +3,7 @@ const mongoose= require('mongoose');
 const cities= require('./cities');
 const {places, descriptors}= require('./seedHelpers');
 const Campground= require('../models/campground');
+const { coordinates } = require('@maptiler/client');
 
 // mongoose connect and error handling
 mongoose.connect('mongodb://127.0.0.1:27017/Yelp-Camp')
@@ -24,6 +25,13 @@ const seedDB= async()=>{
           // creating instance of Campground model
           author:'6a2546f1957386b704208645',
           location: `${cities[random1000].city}, ${cities[random1000].state}`,
+          geometry:{
+            type: "Point",
+            coordinates:[
+                cities[random1000].longitude,
+                cities[random1000].latitude
+            ]
+          },
           title: `${sample(descriptors)} ${sample(places)}`,
           description:
             "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Animi nesciunt, possimus illo laborum tempora reiciendis autem voluptates non minus saepe expedita sit deserunt hic optio impedit est molestiae omnis suscipit?",

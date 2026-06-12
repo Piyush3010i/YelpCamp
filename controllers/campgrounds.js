@@ -1,4 +1,11 @@
+if(process.env.NODE_ENV!=="production"){
+  require('dotenv').config({quiet:true});
+}
+
 const Campground = require("../models/campground.js");
+const {cloudinary} =require("../cloudinary/index.js");
+const maptilerClient = require("@maptiler/client");
+maptilerClient.config.apiKey = process.env.MAPTILER_API_KEY;
 
 //controller for showing all campground
 module.exports.index = async (req, res) => {
@@ -11,14 +18,22 @@ module.exports.renderNewCampground = (req, res) => {
   res.render("campgrounds/new.ejs");
 };
 
-//controller for showing new campground 
-module.exports.showNewCampground = async (req, res) => {
-
-    // if(!req.body.campground){
-    //     throw new customError("Invalid Campground Data!", 400);
-    // }
+//controller for creating new campground 
+module.exports.createNewCampground = async (req, res) => {
     
+    // ↓↓↓ our geo code for maps ↓↓↓
+    const geoData = await maptilerClient.geocoding.forward(req.body.campground.location, { limit: 1 });
+    if (!geoData.features?.length) {
+        req.flash('error', 'Could not geocode that location. Please try again and enter a valid location.');
+        return res.redirect('/campgrounds/new');
+    }
+
     const campground = new Campground(req.body.campground);
+    // ↓↓↓ part of geocode ↓↓↓
+    campground.geometry = geoData.features[0].geometry;
+    campground.location = geoData.features[0].place_name;
+    // ↑↑↑ part of geocode ↑↑↑
+
     campground.images=req.files.map(f=>({ // if we upload 2 or more photos, this function will map those images stored in array
       url: f.path,                       // and map them using theses simple object : url, filename and save those object in campground immages
       filename: f.filename
@@ -66,9 +81,30 @@ module.exports.showNewCampground = async (req, res) => {
     // controller for putting/showing edited campground
     module.exports.putEditCampground = async (req, res) => {
         const { id } = req.params;
+
+        // ↓↓↓ using same geo code on update route  ↓↓↓
+        const geoData = await maptilerClient.geocoding.forward(req.body.campground.location, { limit: 1 });
+        // console.log(geoData);
+        if (!geoData.features?.length) {
+        req.flash('error', 'Could not geocode that location. Please try again and enter a valid location.');
+        return res.redirect(`/campgrounds/${id}/edit`);
+        }
+        // ↑↑↑ our geo code ↑↑↑
+
         const campground = await Campground.findByIdAndUpdate(id, {...req.body.campground});
+        // ↓↓↓ part of geo code ↓↓↓
+        campground.geometry = geoData.features[0].geometry;
+        campground.location = geoData.features[0].place_name;
+        // ↑↑↑ part of geocode ↑↑↑
+
         const imgs= req.files.map(f=>({url: f.path, filename: f.filename}));
         campground.images.push(...imgs);
+        if(req.body.deleteImages){
+          for(let filename of req.body.deleteImages){
+            await cloudinary.uploader.destroy(filename);
+          }
+          await campground.updateOne({$pull: {images: {filename: {$in: req.body.deleteImages}}}});
+        }
         await campground.save();
         req.flash("success", "Successfully updated the Campground!");
         res.redirect(`/campgrounds/${campground._id}`);
