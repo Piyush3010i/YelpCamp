@@ -22,6 +22,7 @@ const session = require("express-session");
 const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
+const mongoSanitize = require('express-mongo-sanitize');
 
 // mongoose connect and error handling
 mongoose.connect("mongodb://127.0.0.1:27017/Yelp-Camp");
@@ -41,6 +42,9 @@ app.use(express.urlencoded({ extended: true })); // middleware to parse the url 
 app.use(methodOverride("_method")); // middleware for method override for put,patch, delete method
 app.use(express.static(path.join(__dirname, "public")));
 app.use(morgan("dev"));
+app.use(mongoSanitize({
+    replaceWith: '_',
+  }),);
 
 // session setup
 const sessionConfig = {
