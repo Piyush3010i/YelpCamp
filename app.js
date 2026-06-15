@@ -2,6 +2,9 @@ if(process.env.NODE_ENV!=="production"){
   require('dotenv').config({quiet:true});
 }
 
+  // require('dotenv').config({quiet:true});
+
+
 const express = require("express");
 const app = express();
 const path = require("path");
@@ -22,7 +25,8 @@ const session = require("express-session");
 const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
-const mongoSanitize = require('express-mongo-sanitize');
+const mongoSanitize = require("express-mongo-sanitize");
+const helmet = require("helmet");
 
 // mongoose connect and error handling
 mongoose.connect("mongodb://127.0.0.1:27017/Yelp-Camp");
@@ -48,11 +52,13 @@ app.use(mongoSanitize({
 
 // session setup
 const sessionConfig = {
+  name: 'campground',
   secret: "Secret Code!",
   resave: false,
   saveUninitialized: true,
   cookie: {
     httpOnly: true,
+    // secure: true,
     expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
     age: 1000 * 60 * 60 * 24 * 7
   },
@@ -61,6 +67,47 @@ const sessionConfig = {
 // below method is used to create session and flash in every app routes
 app.use(session(sessionConfig));
 app.use(flash());
+
+const scriptSrcUrls = [
+    "https://stackpath.bootstrapcdn.com/",
+    "https://kit.fontawesome.com/",
+    "https://cdnjs.cloudflare.com/",
+    "https://cdn.jsdelivr.net",
+    "https://cdn.maptiler.com/",
+];
+const styleSrcUrls = [
+    "https://kit-free.fontawesome.com/",
+    // "https://stackpath.bootstrapcdn.com/",
+    "https://fonts.googleapis.com/",
+    "https://use.fontawesome.com/",
+    "https://cdn.maptiler.com/",
+    "https://cdn.jsdelivr.net", // This url is needed for bootstrap to load 
+];
+const connectSrcUrls = [
+    "https://api.maptiler.com/",
+];
+const fontSrcUrls = [];
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            defaultSrc: [],
+            connectSrc: ["'self'", ...connectSrcUrls],
+            scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
+            styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+            workerSrc: ["'self'", "blob:"],
+            objectSrc: [],
+            imgSrc: [
+                "'self'",
+                "blob:",
+                "data:",
+                "https://res.cloudinary.com/dvcihmixo/", //SHOULD MATCH YOUR CLOUDINARY ACCOUNT! 
+                "https://images.unsplash.com/",
+                "https://api.maptiler.com/",
+            ],
+            fontSrc: ["'self'", ...fontSrcUrls],
+        },
+    })
+);
 
 // below methods are used to authenticate, manage session and flash using passport 
 app.use(passport.initialize());
