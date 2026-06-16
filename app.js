@@ -27,8 +27,12 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const mongoSanitize = require("express-mongo-sanitize");
 const helmet = require("helmet");
+const {MongoStore} = require("connect-mongo");
+const dbUrl= process.env.DB_URL;
 
 // mongoose connect and error handling
+// dbUrl
+// "mongodb://127.0.0.1:27017/Yelp-Camp"
 mongoose.connect("mongodb://127.0.0.1:27017/Yelp-Camp");
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
@@ -50,8 +54,21 @@ app.use(mongoSanitize({
     replaceWith: '_',
   }),);
 
+//mongo store to store session on mongo db
+const store = MongoStore.create({
+  mongoUrl:"mongodb://127.0.0.1:27017/Yelp-Camp",
+  touchAfter:24*60*60,
+  crypto:{
+    secret:"Secret Code!"
+  }
+});
+
+store.on("Error", function(e){
+  console.log("Session Store Error", e); // error handling for session store 
+})
 // session setup
 const sessionConfig = {
+  store,
   name: 'campground',
   secret: "Secret Code!",
   resave: false,
