@@ -74,3 +74,8 @@ module.exports.validateReview = (req, res, next) => {
     next();
   }
 };
+
+// Helper function to protect against Regex injection attacks
+module.exports.escapeRegex = function(text){
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};

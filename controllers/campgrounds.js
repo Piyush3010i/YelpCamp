@@ -5,12 +5,22 @@ if(process.env.NODE_ENV!=="production"){
 const Campground = require("../models/campground.js");
 const {cloudinary} =require("../cloudinary/index.js");
 const maptilerClient = require("@maptiler/client");
+const {escapeRegex} = require("../middleware.js");
 maptilerClient.config.apiKey = process.env.MAPTILER_API_KEY;
 
 //controller for showing all campground
 module.exports.index = async (req, res) => {
-  const campgrounds = await Campground.find({});
-  res.render("campgrounds/index.ejs", { campgrounds });
+  if(req.query.search){
+    // Create a case-insensitive regular expression to match partial titles
+    const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+    
+    const campgrounds = await Campground.find({title:regex});
+    res.render("campgrounds/index.ejs", { campgrounds });
+  }else{
+    const campgrounds = await Campground.find({});
+    res.render("campgrounds/index.ejs", { campgrounds });
+  }
+  
 };
 
 //controller for rendering new campground form

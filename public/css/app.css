@@ -8,6 +8,13 @@
     height: 300px;
 } 
 
-/* body{
-    background-color: rgba(198, 195, 195, 0.6);
-} */
+body{
+    background-image: linear-gradient(rgba(255,255,255,0.7),rgba(255,255,255,0.5)),url("https://images.unsplash.com/photo-1615715931938-fb8351222e5b?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+    background-size: cover;
+    background-position: center;                  /* Centers the background image vertically and horizontally */
+    background-repeat: no-repeat;                 /* Prevents the image from tiling/repeating */
+    background-attachment: fixed;                 /* Optional: Keeps the background fixed in place while scrolling */
+    
+    min-height: 100vh;                            /* Forces the container to stretch to at least the full viewport height */
+    width: 100%;                                  /* Spans the full width of the screen */
+}

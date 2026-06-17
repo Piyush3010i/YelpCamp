@@ -1,0 +1,171 @@
+/* ==========================================================================
+   Mobile-First Layout (Screen sizes smaller than 7.5 inches / 768px)
+   ========================================================================== */
+
+
+/* 1. Map covers the full top, sitting cleanly below the navbar with a smaller height */
+#cluster-map {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%); /* Pulls the map edges out to cover full screen width */
+    height: 250px !important;       /* Explicitly makes the map height smaller */
+    border-radius: 0 !important;    /* Flush sharp edges for the full-bleed top look */
+    box-shadow: none !important;
+    
+    /* --- CHANGED/ADDED CODE --- */
+    margin-top: -48px !important;       /* Strictly forces top margin from the map to be null */
+    margin-bottom: 30px !important; /* CHANGED: Added more spacing below the map before the H1 title */
+}
+
+/* --- ADDED CODE BLOCK --- */
+/* Targets the "Listed Campgrounds" title to create space above and below it on mobile */
+h1.mb-3 {
+    margin-top: 0;
+    margin-bottom: 24px !important; /* ADDED: Forces extra breathing room between the title and campground cards */
+    transition: all 0.3s ease;      /* ADDED: Smooth transition transition for the text hover effects */
+    transform-origin: left center;  /* CHANGED: Anchors the left side so the hover scale expands strictly toward the right */
+}
+
+/* Hover rules for the "Listed Campgrounds" heading to add shadow and minor movement */
+h1.mb-3:hover {
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* ADDED: Gives a soft text shadow on hover */
+    transform: scale(1.08) translateY(-2px);                  /* ADDED: Shifts the heading up slightly on hover */
+}
+
+/* 2. Target the <ul> container holding the cards to act as a 2-column flex/grid row */
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 0.9fr); /* Enforces exactly 2 columns */
+    justify-content: center;                /* ADDED: Centers the narrower grid on mobile viewports */
+    column-gap: 34px;
+    row-gap: 44px;
+
+}
+
+/* 3. Force cards to look uniformly small and compact on mobile */
+ul .card {
+    margin-bottom: 0 !important; /* Overrides Bootstrap's mb-3 */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    
+    /* --- CHANGED/ADDED CODE --- */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important; /* ADDED: Gives a neat, clean shadow to campground cards on mobile */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* ADDED: Smooth animation timing when cards resize/deepen shadow on hover */
+}
+
+ul .card:hover {
+    transform: scale(1.05);                               /* ADDED: Makes the card look 5% bigger than other cards on hover */
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.22) !important; /* ADDED: Changes default shadow to a significantly darker, larger shadow */
+    z-index: 2;                                           /* ADDED: Ensures the enlarged card sits over adjacent card grids cleanly */
+}
+
+/* Stack the image and card text vertically on mobile for small card presentation */
+ul .card .row {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+}
+
+ul .card .col-md-4, 
+ul .card .col-md-8 {
+    width: 100%;
+    padding: 0;
+}
+
+ul .card img {
+    height: 150px;
+    width: 100%;
+    object-fit: cover; /* Keeps image sharp without stretching */
+    border-radius: 4px 4px 0 0;
+}
+
+ul .card-body {
+    padding: 10px; /* Reduces spacing to keep cards compact */
+}
+
+ul .card-title {
+    font-size: 0.95rem; /* Small typography */
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Keeps titles clean on single line */
+}
+
+ul .card-text {
+    font-size: 0.8rem;
+    line-height: 1.3;
+    margin-bottom: 6px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Truncates long descriptions to 2 lines maximum */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+ul .btn {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+    width: 100%;
+}
+
+
+/* ==========================================================================
+   Desktop Layout (Screen sizes equal to or larger than 7.5 inches / 768px)
+   ========================================================================== */
+@media (min-width: 768px) {
+    /* 1. Map features: Round corners and distinct border shadow */
+    #cluster-map {
+        width: 100% !important;
+        margin-left: 0 !important;   /* Resets full-screen breakout back into container bounds */
+        height: 400px !important;    /* Restores an immersive desktop map height */
+        border-radius: 14px !important; /* Round corners */
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important; /* Visible shadow outline */
+        
+        /* --- CHANGED/ADDED CODE --- */
+        margin-top: -10px !important;    /* Restores clean top spacing on desktop screens */
+        margin-bottom: 40px !important; /* Desktop-specific spacing adjustment below map */
+    }
+
+    /* --- ADDED CODE BLOCK --- */
+    /* Normalizes title spacing back for desktop screens */
+    h1.mb-3 {
+        margin-bottom: 30px !important;
+    }
+
+    /* 2. Campground listings: at least 4 columns in multiple rows */
+    ul {
+        grid-template-columns: repeat(3, 1fr); /* 4 Columns */
+        justify-content: start;                             /* ADDED: Keeps the constrained desktop grid cleanly left-aligned */
+        column-gap: 85px;                                   /* Maintains wide horizontal spacing */
+        row-gap: 116px;                                      /* CHANGED: Increased even more to widen the bottom gap between cards */
+    }
+
+    /* 3. Keep desktop cards looking clean, uniform, and miniature */
+    
+    /* --- ADDED CODE BLOCK --- */
+    ul .card {
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12) !important; /* ADDED: Enhances the card shadow slightly for large screens */
+    }
+
+    /* Desktop card hover variant configuration */
+    ul .card:hover {
+        box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28) !important; /* ADDED: Renders a premium deep-set extra-dark layout shadow on desktop hover */
+    }
+
+    ul .card img {
+        /* --- CHANGED/ADDED CODE --- */
+        height: 210px; /* CHANGED: Increased from 140px to make the card image a little bigger on large screens */
+    }
+
+    ul .card-body {
+        padding: 12px;
+    }
+
+    /* --- CHANGED/ADDED CODE --- */
+    ul .card-title {
+        font-size: 1.05rem;
+        white-space: normal; /* Permits titles to span lines cleanly on desktop grids if needed */
+    }
+}

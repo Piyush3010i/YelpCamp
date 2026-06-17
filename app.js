@@ -1,8 +1,8 @@
-// if(process.env.NODE_ENV!=="production"){
-//   require('dotenv').config({quiet:true});
-// }
-
+if(process.env.NODE_ENV!=="production"){
   require('dotenv').config({quiet:true});
+}
+
+  // require('dotenv').config({quiet:true});
 
 
 const express = require("express");
@@ -58,7 +58,7 @@ app.use(mongoSanitize({
 
 //mongo store to store session on mongo db
 const store = MongoStore.create({
-  mongoUrl:"mongodb://127.0.0.1:27017/Yelp-Camp",
+  mongoUrl:dbUrl || "mongodb://127.0.0.1:27017/Yelp-Camp",
   touchAfter:24*60*60,
   crypto:{
     secret:"Secret Code!"
@@ -170,5 +170,5 @@ app.use((err, req, res, next) => {
 
 // port information
 app.listen(port, () => {
-  console.log(`Serving on port: 4000${port}`);
+  console.log(`Serving on port:${port}`);
 });

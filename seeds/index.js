@@ -1,3 +1,7 @@
+if(process.env.NODE_ENV!=="production"){
+  require('dotenv').config({quiet:true});
+}
+
 
 const mongoose= require('mongoose');
 const cities= require('./cities');
@@ -19,12 +23,12 @@ const sample= array=> array[Math.floor( Math.random() * array.length)];
 // creating seed database
 const seedDB= async()=>{
     await Campground.deleteMany({});
-    for(let i=0; i<50; i++){
+    for(let i=0; i<25; i++){
         const random1000= Math.floor( Math.random()* 1000);// generating random no
         const price= Math.floor( Math.random()* 1000);// generating random no 
         const camp = new Campground({
           // creating instance of Campground model
-          author:'6a2546f1957386b704208645',
+          author:'6a32144892f87592877f213d',
           location: `${cities[random1000].city}, ${cities[random1000].state}`,
           geometry:{
             type: "Point",

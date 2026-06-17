@@ -7,8 +7,25 @@
 </head>
 <body> -->
     <% layout("layouts/boilerplate.ejs") %>
-    <div class="mb-3" id="cluster-map"></div>
+    <link rel="stylesheet" href="/css/index.css">
+    <div class="indexBody">
+    <div class="mb-3 shadow " id="cluster-map"></div>
+    
+    <div class=" search-bar container mb-3">
+        <div class="d-flex justify-content-center">
+        <form class="d-flex" action="/campgrounds" method="GET" role="search" style="max-width: 500px; width: 100%;">
+            <input class="form-control me-2" type="search" id="search-input" name="search" placeholder="Search campgrounds..." aria-label="Search" autocomplete="off">
+            <datalist id="campground-options">
+                <% for(let campground of campgrounds.slice(0,5)){ %>
+                    <option value="<%= campground.title %>"></option>
+                <% } %>
+            </datalist>
+            <button class="btn btn-outline-secondary" type="submit">Search</button>
+        </form>
+        </div>
+    </div>
     <h1 class="mb-3">Listed Campgrounds</h1>
+    <!-- --- ADDED: SEARCH BAR PLACED EXCLUSIVELY ON INDEX PAGE --- -->
     <ul>
        <% for(let campground of campgrounds){ %>
         <div class="card mb-3">
@@ -23,13 +40,14 @@
                         <p class="card-text">
                             <small class="text-secondary"><%= campground.location %></small>
                         </p>
-                        <a class="btn btn-primary" href="/campgrounds/<%= campground._id %>">View <%= campground.title %></a>
+                        <a class="btn btn-outline-primary" href="/campgrounds/<%= campground._id %>">View <%= campground.title %></a>
                     </div>
                 </div>
             </div>
         </div>
         <% } %> 
     </ul>
+    </div>
     <%- "<script>" %>
     const maptilerApiKey = "<%- process.env.MAPTILER_API_KEY %>";
     const campgrounds = {
@@ -45,5 +63,23 @@
     <%- "</script>" %>
 
     <script src="/javascripts/clusterMap.js"></script>
+
+    <script>
+    const searchInput = document.getElementById('search-input');
+
+    function toggleDatalist() {
+        if (searchInput.value.trim() === '') {
+            searchInput.removeAttribute('list');
+        } else {
+            searchInput.setAttribute('list', 'campground-options');
+        }
+    }
+
+    // Listen for typing/deleting
+    searchInput.addEventListener('input', toggleDatalist);
+
+    // Listen for when they click inside or tab into the input field
+    searchInput.addEventListener('focus', toggleDatalist);
+</script>
 <!-- </body>
 </html> -->
