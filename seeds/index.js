@@ -4,9 +4,10 @@ const cities= require('./cities');
 const {places, descriptors}= require('./seedHelpers');
 const Campground= require('../models/campground');
 const { coordinates } = require('@maptiler/client');
+const dbUrl = process.env.DB_URL || "mongodb://127.0.0.1:27017/Yelp-Camp";
 
 // mongoose connect and error handling
-mongoose.connect('mongodb://127.0.0.1:27017/Yelp-Camp')
+mongoose.connect(dbUrl)
 const db= mongoose.connection;
 db.on("error", console.error.bind(console,"connection error:"));
 db.once("open", ()=>{

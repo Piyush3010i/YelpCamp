@@ -1,8 +1,8 @@
-if(process.env.NODE_ENV!=="production"){
-  require('dotenv').config({quiet:true});
-}
+// if(process.env.NODE_ENV!=="production"){
+//   require('dotenv').config({quiet:true});
+// }
 
-  // require('dotenv').config({quiet:true});
+  require('dotenv').config({quiet:true});
 
 
 const express = require("express");
@@ -28,12 +28,14 @@ const LocalStrategy = require("passport-local");
 const mongoSanitize = require("express-mongo-sanitize");
 const helmet = require("helmet");
 const {MongoStore} = require("connect-mongo");
-const dbUrl= process.env.DB_URL;
+const dbUrl= process.env.DB_URL || "mongodb://127.0.0.1:27017/Yelp-Camp";
+const port = process.env.PORT || 3000;
+
 
 // mongoose connect and error handling
 // dbUrl
 // "mongodb://127.0.0.1:27017/Yelp-Camp"
-mongoose.connect("mongodb://127.0.0.1:27017/Yelp-Camp");
+mongoose.connect(dbUrl);
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
@@ -167,6 +169,6 @@ app.use((err, req, res, next) => {
 });
 
 // port information
-app.listen(4000, () => {
-  console.log("Serving on port: 4000");
+app.listen(port, () => {
+  console.log(`Serving on port: 4000${port}`);
 });
