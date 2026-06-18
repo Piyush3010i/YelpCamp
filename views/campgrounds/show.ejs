@@ -9,6 +9,7 @@
 <!-- page to show a particular Campground -->
 <% layout("layouts/boilerplate.ejs") %>
 <link rel="stylesheet" href="/css/star.css">
+<link rel="stylesheet" href="/css/showCamp.css">
 
 <div class="row">
   <div class="col-6">
@@ -45,7 +46,7 @@
         <div class="card-body">
           <a
           href="/campgrounds/<%= campground._id %>/edit"
-          class="card-link btn btn-info bg-gradient"
+          class="card-link btn btn-outline-info bg-gradient"
           >Edit</a
           >
           <form
@@ -53,7 +54,7 @@
           action="/campgrounds/<%= campground._id %>?_method=DELETE"
           method="POST"
         >
-          <button class="btn btn-danger bg-gradient">Delete</button>
+          <button class="btn btn-outline-danger bg-gradient">Delete</button>
         </form>
       </div>
       <% } %>
@@ -97,12 +98,13 @@
             </div>
           </div>
           <div class="card-body d-grid gap-2  ">
-            <button class="btn btn-success">Submit</button>
+            <button class="btn btn-outline-success">Submit</button>
           </div>
         </form> 
         <% } %>
       </div>
 
+      <div class="review-scroll-coontainer">
         <%for(let review of campground.reviews){%>
         <div class="card mb-3 " >
           <div class="card-body">
@@ -113,12 +115,13 @@
             <p class="card-text">Review: <%= review.body %></p>
         <% if(currentUser && review.author.equals(currentUser)){ %>
         <form action="/campgrounds/<%= campground._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
-          <button class="btn btn-danger btn-sm">Delete</button>
+          <button class="btn btn-outline-danger btn-sm">Delete</button>
         </form>
         <% } %>
       </div>
     </div>
     <% } %>
+    </div>
   </div>
 </div>
 

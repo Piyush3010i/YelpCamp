@@ -1,0 +1,179 @@
+ 
+
+/* ==========================================================================
+   Global / Mobile-First Styles (Screens under 768px / 7.5 inches)
+   ========================================================================== */
+
+/* Spacing from left and right sides on mobile */
+.row {
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+/* Ensure spacing between layout columns on mobile */
+.col-6 {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+/* Uniform, compact carousel size on mobile */
+#campgroundCarousel .carousel-item img {
+    height: 220px;
+    object-fit: cover;
+    border-radius: 0.375rem 0.375rem 0 0;
+}
+
+/* CLEAN SHADOWS: Apply shadows ONLY to top-level cards, never nested elements */
+.card, 
+#campgroundCarousel {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-radius: 0.375rem;
+    border: none;
+}
+
+/* Compact description text size on mobile */
+.card-text {
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+/* --------------------------------------------------------------------------
+   Infinite Review Scroll Viewport (Mobile)
+   -------------------------------------------------------------------------- */
+.review-scroll-container {
+    max-height: 140px;      /* Matches exactly 1 mobile review card footprint */
+    overflow-y: auto;       /* Creates scroll box */
+    overflow-x: hidden;
+    padding-right: 4px;
+    scrollbar-width: thin;
+}
+
+#map {
+    width: 100%;
+    height: 300px;
+    /* This forces the curved corners */
+    border-radius: 0.5rem; 
+    /* CRITICAL: Prevents the inner map canvas from overlapping the curves */
+    overflow: hidden; 
+}
+
+/* Custom scrollbar styling for webkit layout engine (Chrome/Safari) */
+.review-scroll-container::-webkit-scrollbar {
+    width: 5px;
+}
+.review-scroll-container::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+
+/* Specific inner styles strictly isolated within the scroll container */
+
+
+/* NEW: Compresses the "Leave a Review" form block and header spaces */
+h4.card-body {
+    padding-top: 10px !important;
+    padding-bottom: 0px !important;
+    margin-bottom: 0px !important;
+    font-size: 1.25rem;
+}
+
+/* NEW: Strips excessive margins from standard nested Bootstrap blocks in form */
+form.validated-form .mb-3.card-body {
+    padding: 6px 15px !important;
+    margin-bottom: 0px !important;
+}
+
+form.validated-form .card-body.d-grid {
+    padding: 8px 15px !important;
+}
+
+
+/* ==========================================================================
+   Review Feed Component Trackers (Unified Scroll Box)
+   ========================================================================== */
+
+/* NEW: Targets class typo from template (.review-scroll-coontainer) and minimizes height */
+.review-scroll-coontainer {
+    max-height: 280px;      /* Reduced container tracking height to save space */
+    overflow-y: auto;       
+    overflow-x: hidden;
+    padding-right: 4px;
+    scrollbar-width: thin;
+}
+
+/* Legacy layout engine overrides for desktop standard webkit configurations */
+.review-scroll-coontainer::-webkit-scrollbar {
+    width: 5px;
+}
+.review-scroll-coontainer::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+/* NEW: Low-profile review card layout overrides for all screen configurations */
+.review-scroll-coontainer > .card {
+    margin-bottom: 6px !important; /* Tightens space between consecutive reviews */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04); 
+}
+.review-scroll-coontainer > .card .card-body {
+    padding: 8px 12px !important;  /* Diminishes interior body depth cleanly */
+}
+.review-scroll-coontainer > .card .card-title {
+    font-size: 0.95rem;
+    margin-bottom: 2px !important; /* Lowers spacing under reviewer name */
+}
+.review-scroll-coontainer > .card .starability-result {
+    margin-bottom: 4px !important; /* Drops vertical spacing under stars */
+    transform: scale(0.75);        /* Shrinks down star visualization size asset */
+    transform-origin: left;
+}
+
+
+/* ==========================================================================
+   Responsive Breakpoint for Big Screens (Min-width: 768px / 7.5 inches)
+   ========================================================================== */
+@media (min-width: 768px) {
+    
+    /* Revert width back to 2-column layout */
+    .col-6 {
+        width: 50%;
+    }
+
+    /* Wide spacing from both sides on large screens */
+    .row {
+        max-width: 1200px;
+        padding-left: 40px;
+        padding-right: 40px;
+        margin-top: 25px;
+        margin-bottom: 25px;
+    }
+
+    /* Standard description text size for desktop */
+    .card-text {
+        font-size: 1rem;
+    }
+
+    /* Matching heights for desktop image carousel & map blueprint */
+    #campgroundCarousel .carousel-item img,
+    #map {
+        height: 400px;
+        min-height: 400px;
+    }
+    #campgroundCarousel .carousel-item img {
+        border-radius: 0.375rem 0.375rem 0 0;
+    }
+
+    /* --------------------------------------------------------------------------
+       Infinite Review Scroll Viewport (Desktop)
+       -------------------------------------------------------------------------- */
+    .review-scroll-container {
+        max-height: 360px;  /* Clean desktop balance for 1 standard review card */
+        padding-right: 8px;
+    }
+    .review-scroll-container > .card .card-body {
+        padding:8px 20px !important;       /* Restores spacious layout inside desktop track */
+    }
+}
