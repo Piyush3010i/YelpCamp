@@ -13,14 +13,14 @@
     
     /* --- CHANGED/ADDED CODE --- */
     margin-top: -48px !important;       /* Strictly forces top margin from the map to be null */
-    margin-bottom: 30px !important; /* CHANGED: Added more spacing below the map before the H1 title */
+    margin-bottom: 40px !important; /* CHANGED: Added more spacing below the map before the H1 title */
 }
 
 /* --- ADDED CODE BLOCK --- */
 /* Targets the "Listed Campgrounds" title to create space above and below it on mobile */
 h1.mb-3 {
     margin-top: 0;
-    margin-bottom: 24px !important; /* ADDED: Forces extra breathing room between the title and campground cards */
+    margin-bottom: 40px !important; /* ADDED: Forces extra breathing room between the title and campground cards */
     transition: all 0.3s ease;      /* ADDED: Smooth transition transition for the text hover effects */
     transform-origin: left center;  /* CHANGED: Anchors the left side so the hover scale expands strictly toward the right */
 }
@@ -36,6 +36,7 @@ ul {
     list-style: none;
     padding: 0;
     margin: 0;
+    margin-bottom: 40px;
     display: grid;
     grid-template-columns: repeat(2, 0.9fr); /* Enforces exactly 2 columns */
     justify-content: center;                /* ADDED: Centers the narrower grid on mobile viewports */
@@ -125,13 +126,13 @@ ul .btn {
         
         /* --- CHANGED/ADDED CODE --- */
         margin-top: -10px !important;    /* Restores clean top spacing on desktop screens */
-        margin-bottom: 40px !important; /* Desktop-specific spacing adjustment below map */
+        margin-bottom: 80px !important; /* Desktop-specific spacing adjustment below map */
     }
 
     /* --- ADDED CODE BLOCK --- */
     /* Normalizes title spacing back for desktop screens */
     h1.mb-3 {
-        margin-bottom: 30px !important;
+        margin-bottom: 80px !important;
     }
 
     /* 2. Campground listings: at least 4 columns in multiple rows */
@@ -139,7 +140,8 @@ ul .btn {
         grid-template-columns: repeat(3, 1fr); /* 4 Columns */
         justify-content: start;                             /* ADDED: Keeps the constrained desktop grid cleanly left-aligned */
         column-gap: 85px;                                   /* Maintains wide horizontal spacing */
-        row-gap: 116px;                                      /* CHANGED: Increased even more to widen the bottom gap between cards */
+        row-gap: 116px;
+        margin-bottom: 80px !important;                                     /* CHANGED: Increased even more to widen the bottom gap between cards */
     }
 
     /* 3. Keep desktop cards looking clean, uniform, and miniature */

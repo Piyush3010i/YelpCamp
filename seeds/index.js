@@ -6,6 +6,7 @@ if(process.env.NODE_ENV!=="production"){
 const mongoose= require('mongoose');
 const cities= require('./cities');
 const {places, descriptors}= require('./seedHelpers');
+const campImages = require('./campImage');
 const Campground= require('../models/campground');
 const { coordinates } = require('@maptiler/client');
 const dbUrl = process.env.DB_URL || "mongodb://127.0.0.1:27017/Yelp-Camp";
@@ -26,6 +27,7 @@ const seedDB= async()=>{
     for(let i=0; i<25; i++){
         const random1000= Math.floor( Math.random()* 1000);// generating random no
         const price= Math.floor( Math.random()* 1000);// generating random no 
+        // const randomImageIndex= Math.floor( Math.random()*25);
         const camp = new Campground({
           // creating instance of Campground model
           author:'6a32144892f87592877f213d',
@@ -42,23 +44,11 @@ const seedDB= async()=>{
             "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Animi nesciunt, possimus illo laborum tempora reiciendis autem voluptates non minus saepe expedita sit deserunt hic optio impedit est molestiae omnis suscipit?",
           price,
           images:[
-            {
-                url: 'https://res.cloudinary.com/dvcihmixo/image/upload/v1781106803/CampSite/wgbxrd8hgkjebhseboin.jpg',
-                filename: 'CampSite/wgbxrd8hgkjebhseboin'
-            },
-            {
-                url: 'https://res.cloudinary.com/dvcihmixo/image/upload/v1781106807/CampSite/eu19xf5sonyil1hzxr7x.jpg',
-                filename: 'CampSite/eu19xf5sonyil1hzxr7x'
-            },
-            {
-                url: 'https://res.cloudinary.com/dvcihmixo/image/upload/v1781106807/CampSite/xypoee0zmnbeyi18fzuv.jpg',
-                filename: 'CampSite/xypoee0zmnbeyi18fzuv'
-            },
-            {
-                url: 'https://res.cloudinary.com/dvcihmixo/image/upload/v1781106810/CampSite/yw3pgxs04jto1xythdyu.jpg',
-                filename: 'CampSite/yw3pgxs04jto1xythdyu'
-                }
-            ],
+           sample(campImages),
+           sample(campImages),
+           sample(campImages),
+           sample(campImages)
+        ],
         });
         await camp.save();
     }

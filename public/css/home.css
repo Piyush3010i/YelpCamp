@@ -1,16 +1,21 @@
 
 body{
     height: 100vh;
+    margin: 0;
     background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),
     url("https://images.unsplash.com/photo-1631635589499-afd87d52bf64?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     text-shadow: 0 0.05rem 0.1rem rgba(0,0,0,0.5);
-    box-shadow: 0 0 5rem rgba(0,0,0,0.5);
+    /* box-shadow: 0 0 5rem rgba(0,0,0,0.5); */
 }
 
 .cover-container {
-    max-width: 60vw;
+    width: 100%;
+    max-width: 45rem;
+    padding: 0 1.5rem;
 }
 
 .nav-link {
@@ -35,4 +40,78 @@ body{
     color:#333 !important;
     font-weight: 500;
     text-shadow: none;
+}
+
+/* ==========================================================================
+   DESKTOP ADJUSTMENTS (Laptops and Monitors)
+   ========================================================================== */
+@media (min-width: 576px) {
+    header h3.float-md-start {
+        font-size: 2rem;       /* Makes YelpCamp h3 a little bigger */
+        margin-right: 2rem;    /* Margin on the right end */
+        line-height: 1.2;      /* Ensures perfect horizontal alignment with navbar links */
+    }
+
+    header nav.float-md-end {
+        margin-left: 2rem;     /* Margin on the left end */
+    }
+}
+
+/* ==========================================================================
+   MOBILE ADJUSTMENTS (Small screen less than ~7.5 inches / 768px)
+   ========================================================================== */
+@media (max-width: 575px) {
+    /* Keeps h3 left aligned and navbar right aligned on small screens */
+    header div {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        width: 100% !important;
+    }
+    
+    header h3 {
+        font-size:22px !important; /* Base sizing for mobile */
+        /* margin-left:0px !important;
+        margin-bottom: 0px !important;
+        margin-top: -10px !important; */
+        margin: -5px !important;
+    }
+
+    header nav.nav-masthead {
+        display: flex !important;
+        justify-content: flex-end !important;
+        margin: 0 !important;
+        
+    }
+
+    header .nav-link {
+        font-size: 12px !important;  /* Makes navbar little smaller than h3 YelpCamp */
+        margin-left: 8px !important;
+        margin-right: 0px !important;
+        /* align-items: right !important; */
+    }
+
+    /* Main body content resizing */
+    main h1 {
+        font-size: 24px !important;  /* Makes landing page h1 smaller */
+    }
+
+    main p.lead {
+        font-size: 0.95rem !important; /* Makes paragraph contents little smaller */
+        width: 100% !important;        /* Makes paragraph width wider */
+        max-width: 100% !important;
+        margin-left: 0px !important;
+        padding: 0 10px;
+    }
+
+    /* Button adjustments */
+    main .btn {
+        padding: 0.2rem 0.4rem !important; /* Shrinks the anchor tag button
+        /* font-size: 0.9rem !important; */ 
+        font-size: 0.85rem !important;
+    }
+
+    footer{
+        font-size : 0.75rem !important;
+    }
 }
